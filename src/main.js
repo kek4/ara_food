@@ -26,5 +26,6 @@ new Vue({
       projectId: 'ara-food',
       storageBucket: ''
     })
+    this.$store.dispatch('loadEvents')
   }
 })
