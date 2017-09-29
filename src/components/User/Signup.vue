@@ -49,6 +49,31 @@
                 </v-layout>
                 <v-layout row>
                   <v-flex xs12>
+                    <v-text-field
+                      name="phone"
+                      label="Phone"
+                      id="phone"
+                      v-model="phone"
+                      type="number">
+                    </v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-layout row>
+                  <v-flex xs12>
+                    <v-text-field
+                      name="avatar"
+                      label="Avatar URL"
+                      id="avatar"
+                      v-model="avatar"></v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-layout row>
+                  <v-flex xs12>
+                    <img :src="imageUrl" height="150">
+                  </v-flex>
+                </v-layout>
+                <v-layout row>
+                  <v-flex xs12>
                     <v-btn type="submit" :disabled="loading" :loading="loading">
                       Sign up
                       <span slot="loader" class="custom-loader">
@@ -72,7 +97,9 @@ export default {
     return {
       email: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      phone: '',
+      avatar: ''
     }
   },
   computed: {
@@ -98,7 +125,11 @@ export default {
   },
   methods: {
     onSignup () {
-      this.$store.dispatch('signUserUp', {email: this.email, password: this.password})
+      this.$store.dispatch('signUserUp', {
+        email: this.email,
+        password: this.password,
+        phone: this.phone,
+        avatar: this.avatar})
     },
     onDismissed () {
       this.$store.dispatch('clearError')

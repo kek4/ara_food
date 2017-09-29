@@ -6,11 +6,15 @@ import * as firebase from 'firebase'
 import router from './router'
 import { store } from './store'
 import Alert from './components/Shared/Alert.vue'
+import EditEventDialogue from './components/Event/EditEventDialogue.vue'
+import SubscribeDialogue from './components/Event/SubscribeDialogue.vue'
 
 Vue.use(Vuetify)
 Vue.config.productionTip = false
 
 Vue.component('app-alert', Alert)
+Vue.component('app-edit-event-dialogue', EditEventDialogue)
+Vue.component('app-event-subscribe-dialogue', SubscribeDialogue)
 
 /* eslint-disable no-new */
 new Vue({
@@ -25,6 +29,11 @@ new Vue({
       databaseURL: 'https://ara-food.firebaseio.com',
       projectId: 'ara-food',
       storageBucket: ''
+    })
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.$store.dispatch('autoSignin', user)
+      }
     })
     this.$store.dispatch('loadEvents')
   }
