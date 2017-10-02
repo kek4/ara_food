@@ -1,6 +1,6 @@
 <template>
   <v-dialog persistent v-model="subscribeDialogue">
-    <v-btn accent slot="activator">
+    <v-btn accent slot="activator" @click="test">
       {{ userIsSubscribe ? 'Unsub' : 'Sub'}}
     </v-btn>
     <v-card>
@@ -66,6 +66,12 @@
             comment: this.comment
           })
         }
+      },
+      test () {
+        let hop = this.$store.getters.loadedEvent(this.eventId).subscribers.find(event => {
+          return event.id === this.$store.getters.user.id
+        }) !== undefined
+        console.log(hop)
       }
     }
   }

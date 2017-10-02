@@ -125,7 +125,10 @@ export const store = new Vuex.Store({
           for (let key in obj) {
             let subscribers = []
             if (obj[key].subscribers !== 'undefined') {
-              subscribers = [obj[key].subscribers]
+              const subList = obj[key].subscribers
+              for (let key in subList) {
+                subscribers.push(subList[key])
+              }
             }
             events.push({
               id: key,
