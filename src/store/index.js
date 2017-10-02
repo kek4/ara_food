@@ -54,6 +54,16 @@ export const store = new Vuex.Store({
         event.description = payload.description
       }
     },
+    updateProfileData (state, payload) {
+      console.log(state.user.phone)
+      console.log(payload.phone)
+      if (payload.phone) {
+        state.user.phone = payload.phone
+      }
+      if (payload.avatar) {
+        state.user.avatar = payload.avatar
+      }
+    },
     setUser (state, payload) {
       state.user = payload
     },
@@ -114,7 +124,7 @@ export const store = new Vuex.Store({
           const obj = data.val()
           for (let key in obj) {
             let subscribers = []
-            if (obj[key].subscribers === 'undefined') {
+            if (obj[key].subscribers !== 'undefined') {
               subscribers = [obj[key].subscribers]
             }
             events.push({
@@ -181,6 +191,35 @@ export const store = new Vuex.Store({
           console.log(error)
         })
     },
+    updateProfileData ({commit, getters}, payload) {
+      commit('setLoading', true)
+      const updateObj = {}
+      if (payload.phone) {
+        updateObj.phone = payload.phone
+      }
+      if (payload.avatar) {
+        updateObj.avatar = payload.avatar
+      }
+      firebase.database().ref('users').child(getters.user.id).update(updateObj)
+        .then(() => {
+          commit('setLoading', false)
+          commit('updateProfileData', payload)
+        })
+        .catch(error => {
+          commit('setLoading', false)
+          console.log(error)
+        })
+    },
+    updateUserPassword ({commit, getters}, payload) {
+      firebase.auth().currentUser.updatePassword(payload.password)
+        .then(() => {
+          commit('setLoading', false)
+        })
+        .catch(error => {
+          commit('setLoading', false)
+          console.log(error)
+        })
+    },
     signUserUp ({commit}, payload) {
       commit('setLoading', true)
       commit('clearError')
@@ -190,7 +229,8 @@ export const store = new Vuex.Store({
             firebase.database().ref('/users/').child(user.uid).set({
               email: payload.email,
               phone: payload.phone,
-              avatar: payload.avatar
+              avatar: payload.avatar,
+              admin: payload.admin
             })
               .then(
               () => {
@@ -198,7 +238,8 @@ export const store = new Vuex.Store({
                   id: user.uid,
                   email: payload.email,
                   phone: payload.phone,
-                  avatar: payload.avatar
+                  avatar: payload.avatar,
+                  admin: payload.admin
                 }
                 commit('setLoading', false)
                 commit('setUser', newUser)
@@ -232,7 +273,8 @@ export const store = new Vuex.Store({
                   id: user.uid,
                   email: obj.email,
                   phone: obj.phone,
-                  avatar: obj.avatar
+                  avatar: obj.avatar,
+                  admin: obj.admin
                 }
                 commit('setLoading', false)
                 commit('setUser', newUser)
@@ -257,7 +299,8 @@ export const store = new Vuex.Store({
         id: payload.uid,
         email: payload.email,
         phone: payload.phone,
-        avatar: payload.avatar
+        avatar: payload.avatar,
+        admin: payload.admin
       })
     },
     logout ({commit}) {

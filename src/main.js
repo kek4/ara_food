@@ -8,6 +8,7 @@ import { store } from './store'
 import Alert from './components/Shared/Alert.vue'
 import EditEventDialogue from './components/Event/EditEventDialogue.vue'
 import SubscribeDialogue from './components/Event/SubscribeDialogue.vue'
+import updateUserPassword from './components/User/UpdatePasswordDialogue.vue'
 
 Vue.use(Vuetify)
 Vue.config.productionTip = false
@@ -15,6 +16,7 @@ Vue.config.productionTip = false
 Vue.component('app-alert', Alert)
 Vue.component('app-edit-event-dialogue', EditEventDialogue)
 Vue.component('app-event-subscribe-dialogue', SubscribeDialogue)
+Vue.component('app-update-user-dialogue', updateUserPassword)
 
 /* eslint-disable no-new */
 new Vue({
@@ -32,6 +34,7 @@ new Vue({
     })
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        // rajouter les infos de users ds firebase
         this.$store.dispatch('autoSignin', user)
       }
     })

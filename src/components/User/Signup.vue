@@ -60,6 +60,17 @@
                 </v-layout>
                 <v-layout row>
                   <v-flex xs12>
+                    <v-checkbox
+                      label="Admin"
+                      v-model="admin"
+                      false-value="false"
+                      true-value="true"
+                      @click="checkboxToggle"
+                    ></v-checkbox>
+                  </v-flex>
+                </v-layout>
+                <v-layout row>
+                  <v-flex xs12>
                     <v-text-field
                       name="avatar"
                       label="Avatar URL"
@@ -99,7 +110,8 @@ export default {
       password: '',
       confirmPassword: '',
       phone: '',
-      avatar: ''
+      avatar: '',
+      admin: 0
     }
   },
   computed: {
@@ -129,10 +141,14 @@ export default {
         email: this.email,
         password: this.password,
         phone: this.phone,
-        avatar: this.avatar})
+        avatar: this.avatar,
+        admin: this.admin})
     },
     onDismissed () {
       this.$store.dispatch('clearError')
+    },
+    checkboxToggle () {
+      this.admin = 1 - this.admin
     }
   }
 }

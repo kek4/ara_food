@@ -12,9 +12,15 @@
           </v-flex>
         </v-layout>
         <v-divider></v-divider>
-        <v-layout row wrap>
+        <v-layout row wrap v-if="!userIsSubscribe">
           <v-flex xs12>
-            <v-card-text>You can still sub later</v-card-text>
+            <v-text-field
+              name="comment"
+              label="Comment"
+              id="comment"
+              v-model="comment"
+              multi-line
+              required></v-text-field>
           </v-flex>
         </v-layout>
         <v-divider></v-divider>
@@ -36,7 +42,8 @@
     props: ['eventId'],
     data () {
       return {
-        subscribeDialogue: false
+        subscribeDialogue: false,
+        comment: ''
       }
     },
     computed: {
@@ -56,7 +63,7 @@
         } else {
           this.$store.dispatch('subscribeUserForEvent', {
             id: this.eventId,
-            comment: 'trololo'
+            comment: this.comment
           })
         }
       }
