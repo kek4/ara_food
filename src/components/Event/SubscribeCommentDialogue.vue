@@ -1,18 +1,17 @@
 <template>
   <v-dialog persistent v-model="subscribeDialogue">
-    <v-btn accent slot="activator">
-      {{ userIsSubscribe ? 'Unsub' : 'Sub'}}
+    <v-btn accent slot="activator" v-if="userIsSubscribe">
+      <v-icon>edit</v-icon>
     </v-btn>
     <v-card>
       <v-container>
         <v-layout row wrap>
           <v-flex xs12>
-            <v-card-title v-if="userIsSubscribe">Unsub from event</v-card-title>
-            <v-card-title v-else>Sub for event</v-card-title>
+            <v-card-title>Edit your comment</v-card-title>
           </v-flex>
         </v-layout>
         <v-divider></v-divider>
-        <v-layout row wrap v-if="!userIsSubscribe">
+        <v-layout row wrap>
           <v-flex xs12>
             <v-text-field
               name="comment"
@@ -38,6 +37,7 @@
 </template>
 
 <script>
+  import * as firebase from 'firebase'
   export default {
     props: ['eventId'],
     data () {
@@ -56,17 +56,20 @@
     },
     methods: {
       onAgree () {
-        if (this.userIsSubscribe) {
-          this.$store.dispatch('unSubscribeUserForEvent', {
-            id: this.eventId
-          })
-        } else {
-          this.$store.dispatch('subscribeUserForEvent', {
-            id: this.eventId,
-            comment: this.comment
-          })
-        }
+        this.$store.dispatch('editComment', {
+          id: this.eventId,
+          comment: this.comment
+        })
       }
+    },
+    created () {
+      firebase.database().ref('/events/' + this.eventId)
+      .child('/subscribers/' + this.$store.getters.user.id)
+      .child('comment')
+      .once('value')
+      .then((data) => {
+        this.comment = data.val()
+      })
     }
   }
 </script>

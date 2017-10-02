@@ -26,6 +26,15 @@ export const store = new Vuex.Store({
         })
       }
     },
+    editComment (state, payload) {
+      const event = state.loadedEvents.find(event => {
+        return event.id === payload.fbEventKey
+      })
+      const subscribers = event.subscribers.find(sub => {
+        return sub.id === payload.id
+      })
+      subscribers.comment = payload.comment
+    },
     unSubscribeUserForEvent (state, payload) {
       const event = state.loadedEvents.find(event => {
         return event.id === payload.fbEventKey
@@ -89,6 +98,26 @@ export const store = new Vuex.Store({
         .then((data) => {
           commit('setLoading', false)
           commit('subscribeUserForEvent', {
+            id: user.id,
+            comment: payload.comment,
+            fbEventKey: payload.id
+          })
+        })
+        .catch(error => {
+          commit('setLoading', false)
+          console.log(error)
+        })
+    },
+    editComment ({commit, getters}, payload) {
+      commit('setLoading', true)
+      const user = getters.user
+      firebase.database().ref('/events/' + payload.id).child('subscribers/' + user.id)
+        .update({
+          comment: payload.comment
+        })
+        .then((data) => {
+          commit('setLoading', false)
+          commit('editComment', {
             id: user.id,
             comment: payload.comment,
             fbEventKey: payload.id

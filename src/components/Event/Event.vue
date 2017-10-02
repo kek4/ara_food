@@ -30,6 +30,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <app-event-subscribe-dialogue :eventId="event.id"></app-event-subscribe-dialogue>
+            <app-event-subscribe-comment-dialogue :eventId="event.id"></app-event-subscribe-comment-dialogue>
           </v-card-actions>
         </v-card>
       </v-flex>
