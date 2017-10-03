@@ -77,24 +77,7 @@
                         <v-icon left>arrow_forward</v-icon>
                         Voir l'évenements
                       </v-btn>
-                      <v-dialog v-model="dialog" lazy absolute>
-                        <v-btn flat slot="activator">
-                          <v-icon left class="material-icons">delete</v-icon>
-                          Supprimer l'évenements
-                        </v-btn>
-                        <v-card>
-                          <v-card-title>
-                            <div class="headline">Attention</div>
-                          </v-card-title>
-                          <v-card-text>Etes-vous sûr de vouloir supprimer cet évenemnt ?</v-card-text>
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">Non</v-btn>
-                            <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false" :to="'/deleteEvent/' + event.id">Oui</v-btn>
-                          </v-card-actions>
-                        </v-card>
-
-                      </v-dialog>
+                      <app-delete-event-dialog :eventId="event.id" title="yolo"></app-delete-event-dialog>
                     </v-card-actions>
                   </v-flex>
                 </v-layout>

@@ -19,6 +19,7 @@
             <template v-if="userIsCreator">
               <v-spacer></v-spacer>
               <app-edit-event-dialogue :event="event"></app-edit-event-dialogue>
+              <app-delete-event-dialog :eventId="event.id" title="yolo"></app-delete-event-dialog>
             </template>
           </v-card-title>
           <v-card-media

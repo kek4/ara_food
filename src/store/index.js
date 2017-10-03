@@ -52,6 +52,9 @@ export const store = new Vuex.Store({
     createEvent (state, payload) {
       state.loadedEvents.push(payload)
     },
+    deleteEvent (state, payload) {
+      state.loadedEvents.splice(state.loadedEvents.findIndex(event => event.id === payload.id), 1)
+    },
     updateEventData (state, payload) {
       const event = state.loadedEvents.find(event => {
         return event.id === payload.id
@@ -203,6 +206,21 @@ export const store = new Vuex.Store({
           console.log(error)
           // commit('setError', error)
         })
+    },
+    deleteEvent ({commit}, payload) {
+      commit('setLoading', true)
+      commit('clearError')
+      firebase.database().ref('events/' + payload.id).remove()
+      .then(() => {
+        commit('setLoading', false)
+        commit('deleteEvent', {
+          id: payload.id
+        })
+      })
+      .catch((error) => {
+        commit('setLoading', false)
+        console.log(error)
+      })
     },
     updateEventData ({commit}, payload) {
       commit('setLoading', true)
