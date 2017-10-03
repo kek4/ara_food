@@ -5,6 +5,9 @@ import Events from '@/components/Event/Events'
 import Event from '@/components/Event/Event'
 import CreateEvent from '@/components/Event/CreateEvent'
 import Profile from '@/components/User/Profile'
+import Admin from '@/components/Admin/Admin'
+import ManageEvent from '@/components/Admin/ManageEvent'
+import ManageUser from '@/components/Admin/ManageUser'
 import Signin from '@/components/User/Signin'
 import Signup from '@/components/User/Signup'
 import AuthGuard from './auth-guard'
@@ -40,6 +43,21 @@ export default new Router({
       name: 'Profile',
       component: Profile,
       beforeEnter: AuthGuard
+    },
+    {
+      path: '/admin',
+      name: 'Admin',
+      component: Admin
+    },
+    {
+      path: '/manageEvent',
+      name: 'ManageEvent',
+      component: ManageEvent
+    },
+    {
+      path: '/manageUser',
+      name: 'ManageUser',
+      component: ManageUser
     },
     {
       path: '/signup',
