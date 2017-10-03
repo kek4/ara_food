@@ -14,6 +14,8 @@
         <v-card>
           <v-card-title>
             <h6 class="primary--text">{{ event.title }}</h6>
+            <v-spacer></v-spacer>
+            <div class="info--text">{{ event.date }}</div>
             <template v-if="userIsCreator">
               <v-spacer></v-spacer>
               <app-edit-event-dialogue :event="event"></app-edit-event-dialogue>
@@ -24,8 +26,16 @@
             height="400px">
           </v-card-media>
           <v-card-text>
-            <div class="info--text">{{ event.date }}</div>
             <div>{{ event.description }}</div>
+            <v-divider></v-divider>
+            <v-subheader>Subscribers</v-subheader>
+            <v-layout row wrap>
+              <v-flex xs12>
+                <v-list two-line>
+                  <app-subscriber v-for="sub in event.subscribers" :sub="sub" :key="sub.id"></app-subscriber>
+                </v-list>
+              </v-flex>
+            </v-layout>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>

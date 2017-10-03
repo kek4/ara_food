@@ -7,9 +7,10 @@ import router from './router'
 import { store } from './store'
 import Alert from './components/Shared/Alert.vue'
 import EditEventDialogue from './components/Event/EditEventDialogue.vue'
-import SubscribeDialogue from './components/Event/SubscribeDialogue.vue'
-import SubscribeCommentDialogue from './components/Event/SubscribeCommentDialogue.vue'
+import SubscribeDialogue from './components/Subscribe/SubscribeDialogue.vue'
+import SubscribeCommentDialogue from './components/Subscribe/SubscribeCommentDialogue.vue'
 import updateUserPassword from './components/User/UpdatePasswordDialogue.vue'
+import Subscriber from './components/Subscribe/Subscriber.vue'
 
 Vue.use(Vuetify)
 Vue.config.productionTip = false
@@ -19,6 +20,7 @@ Vue.component('app-edit-event-dialogue', EditEventDialogue)
 Vue.component('app-event-subscribe-dialogue', SubscribeDialogue)
 Vue.component('app-event-subscribe-comment-dialogue', SubscribeCommentDialogue)
 Vue.component('app-update-user-dialogue', updateUserPassword)
+Vue.component('app-subscriber', Subscriber)
 
 /* eslint-disable no-new */
 new Vue({

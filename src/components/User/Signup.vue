@@ -14,6 +14,18 @@
                 <v-layout row>
                   <v-flex xs12>
                     <v-text-field
+                      name="username"
+                      label="Username"
+                      id="username"
+                      v-model="username"
+                      type="text"
+                      required>
+                    </v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-layout row>
+                  <v-flex xs12>
+                    <v-text-field
                     name="email"
                     label="Mail"
                     id="email"
@@ -63,8 +75,6 @@
                     <v-checkbox
                       label="Admin"
                       v-model="admin"
-                      false-value="false"
-                      true-value="true"
                       @click="checkboxToggle"
                     ></v-checkbox>
                   </v-flex>
@@ -80,7 +90,7 @@
                 </v-layout>
                 <v-layout row>
                   <v-flex xs12>
-                    <img :src="imageUrl" height="150">
+                    <img :src="avatar" height="150">
                   </v-flex>
                 </v-layout>
                 <v-layout row>
@@ -106,6 +116,7 @@
 export default {
   data () {
     return {
+      username: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -138,6 +149,7 @@ export default {
   methods: {
     onSignup () {
       this.$store.dispatch('signUserUp', {
+        username: this.username,
         email: this.email,
         password: this.password,
         phone: this.phone,

@@ -259,6 +259,7 @@ export const store = new Vuex.Store({
         .then(
           user => {
             firebase.database().ref('/users/').child(user.uid).set({
+              username: payload.username,
               email: payload.email,
               phone: payload.phone,
               avatar: payload.avatar,
@@ -268,6 +269,7 @@ export const store = new Vuex.Store({
               () => {
                 const newUser = {
                   id: user.uid,
+                  username: payload.username,
                   email: payload.email,
                   phone: payload.phone,
                   avatar: payload.avatar,
