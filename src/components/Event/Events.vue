@@ -1,5 +1,12 @@
 <template lang="html">
   <v-container>
+      <v-snackbar
+      top
+      @dismissed="onDismissed"
+      v-model="toaster">
+      {{ toaster }}
+      <v-btn flat class="pink--text" @click.native="onDismissed">Close</v-btn>
+    </v-snackbar>
     <v-layout row wrap>
       <v-flex xs12 sm10 md8 offset-sm1 offset-md2>
         <v-card class="info mb-2" v-for="event in events" :key="event.id">
@@ -15,7 +22,7 @@
                 <v-card-title primary-title>
                   <div>
                     <h5 class="white--text mb-0">{{ event.title }}</h5>
-                    <div>{{ event.date }}</div>
+                    <div>{{ event.date | date }}</div>
                   </div>
                 </v-card-title>
                 <v-card-actions>
@@ -35,13 +42,17 @@
 
 <script>
 export default {
-  data () {
-    return {
-    }
-  },
   computed: {
     events () {
-      return this.$store.getters.loadedEvents
+      return this.$store.getters.eventToCome
+    },
+    toaster () {
+      return this.$store.getters.toaster
+    }
+  },
+  methods: {
+    onDismissed () {
+      this.$store.dispatch('clearToaster')
     }
   }
 }

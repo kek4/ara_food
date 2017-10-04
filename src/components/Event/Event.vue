@@ -15,11 +15,11 @@
           <v-card-title>
             <h6 class="primary--text">{{ event.title }}</h6>
             <v-spacer></v-spacer>
-            <div class="info--text">{{ event.date }}</div>
             <template v-if="userIsCreator">
               <v-spacer></v-spacer>
+              <app-edit-date-dialogue :event="event"></app-edit-date-dialogue>
               <app-edit-event-dialogue :event="event"></app-edit-event-dialogue>
-              <app-delete-event-dialog :eventId="event.id" title="yolo"></app-delete-event-dialog>
+              <app-delete-event-dialog :eventId="event.id" title=""></app-delete-event-dialog>
             </template>
           </v-card-title>
           <v-card-media
@@ -27,6 +27,7 @@
             height="400px">
           </v-card-media>
           <v-card-text>
+            <div class="info--text">{{ event.date | date}}</div>
             <div>{{ event.description }}</div>
             <v-divider></v-divider>
             <v-subheader>Subscribers</v-subheader>
@@ -38,7 +39,7 @@
               </v-flex>
             </v-layout>
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions v-if="userIsAuthenticated">
             <v-spacer></v-spacer>
             <app-event-subscribe-dialogue :eventId="event.id"></app-event-subscribe-dialogue>
             <app-event-subscribe-comment-dialogue :eventId="event.id"></app-event-subscribe-comment-dialogue>

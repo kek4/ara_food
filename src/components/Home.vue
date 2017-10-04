@@ -1,5 +1,10 @@
 <template>
   <v-container>
+    <v-layout row wrap>
+      <v-flex xs12>
+        <h2 class="text-xs-center">Evenements à venir !</h2>
+      </v-flex>
+    </v-layout>
     <v-layout>
       <v-flex xs12 class="text-xs-center">
         <v-progress-circular
@@ -23,11 +28,6 @@
             </div>
           </v-carousel-item>
         </v-carousel>
-      </v-flex>
-    </v-layout>
-    <v-layout row wrap  class="mt-2">
-      <v-flex xs12 class="text-xs-center">
-        <p>Join our awesome events!</p>
       </v-flex>
     </v-layout>
   </v-container>

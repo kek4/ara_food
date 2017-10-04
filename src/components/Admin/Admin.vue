@@ -53,7 +53,7 @@
                     <v-list-tile-action>
                      <v-list-tile-action-text>{{ event.subscribers.length }} participants</v-list-tile-action-text>
                     </v-list-tile-action>
-                  </v-list-tile>     
+                  </v-list-tile>
                 </v-list>
               </v-list>
             </v-card-text>
@@ -84,7 +84,8 @@
             {icon: 'dashboard', title: 'Accueil admin', link: '/admin'},
             {icon: 'event', title: 'Liste des évenements', link: '/manageEvent'},
             {icon: 'room', title: 'Liste utilisateurs', link: '/manageUser'},
-            {icon: 'person', title: 'Profile', link: '/profile'}
+            {icon: 'person', title: 'Profile', link: '/profile'},
+            {icon: 'face', title: 'Sign up', link: '/signup'}
         ]
         return menuItems
       }

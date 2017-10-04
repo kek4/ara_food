@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-toolbar>
+    <v-toolbar dark class="primary">
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">Ara Food</router-link>
       </v-toolbar-title>
@@ -16,6 +16,12 @@
           {{ item.title }}
         </v-btn>
         <v-btn flat
+               v-if="userIsAdmin"
+               to="/admin">
+          <v-icon left>exit_to_app</v-icon>
+          Admin
+        </v-btn>
+        <v-btn flat
               v-if="userIsAuthenticated"
               @click="onLogout">
           <v-icon left>exit_to_app</v-icon>
@@ -26,6 +32,11 @@
     <main>
       <router-view></router-view>
     </main>
+    <v-footer>
+      <div>J&R</div>
+      <v-spacer></v-spacer>
+      <div>2017</div>
+    </v-footer>
   </v-app>
 </template>
 
@@ -38,7 +49,6 @@
     computed: {
       menuItems () {
         let menuItems = [
-          {icon: 'face', title: 'Sign up', link: '/signup'},
           {icon: 'lock_open', title: 'Sign in', link: '/signin'}
         ]
         if (this.userIsAuthenticated) {
@@ -52,11 +62,23 @@
       },
       userIsAuthenticated () {
         return this.$store.getters.user !== null && this.$store.getters.user !== undefined
+      },
+      userIsAdmin () {
+        if (this.userIsAuthenticated) {
+          return this.$store.getters.user.admin === 1
+        }
       }
     },
     methods: {
       onLogout () {
         this.$store.dispatch('logout')
+      }
+    },
+    watch: {
+      userIsAuthenticated (value) {
+        if (value === false) {
+          this.$router.push('/')
+        }
       }
     }
   }

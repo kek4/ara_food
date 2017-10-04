@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as firebase from 'firebase'
+import router from '../router'
+import moment from 'moment'
 
 Vue.use(Vuex)
 
@@ -9,7 +11,8 @@ export const store = new Vuex.Store({
     loadedEvents: [],
     user: null,
     loading: false,
-    error: null
+    error: null,
+    toaster: null
   },
   mutations: {
     subscribeUserForEvent (state, payload) {
@@ -66,6 +69,14 @@ export const store = new Vuex.Store({
         event.description = payload.description
       }
     },
+    updateDateEvent (state, payload) {
+      const event = state.loadedEvents.find(event => {
+        return event.id === payload.id
+      })
+      if (payload.date) {
+        event.date = payload.date
+      }
+    },
     updateProfileData (state, payload) {
       console.log(state.user.phone)
       console.log(payload.phone)
@@ -87,6 +98,12 @@ export const store = new Vuex.Store({
     },
     clearError (state) {
       state.error = null
+    },
+    setToaster (state, payload) {
+      state.toaster = payload
+    },
+    clearToaster (state) {
+      state.toaster = null
     }
   },
   actions: {
@@ -188,7 +205,7 @@ export const store = new Vuex.Store({
         title: payload.title,
         description: payload.description,
         imageUrl: payload.imageUrl,
-        date: '2017-08-21',
+        date: payload.date,
         creatorId: getters.user.id,
         subscribers: []
       }
@@ -200,6 +217,11 @@ export const store = new Vuex.Store({
             ...event,
             id: key
           })
+          router.push({name: 'Events'})
+          commit('setToaster', event.title + 'a été créer pour le ' + event.date)
+          setTimeout(() => {
+            commit('clearToaster')
+          }, 5000)
         })
         .catch((error) => {
           commit('setLoading', false)
@@ -235,6 +257,22 @@ export const store = new Vuex.Store({
         .then(() => {
           commit('setLoading', false)
           commit('updateEventData', payload)
+        })
+        .catch(error => {
+          commit('setLoading', false)
+          console.log(error)
+        })
+    },
+    updateDateEvent ({commit}, payload) {
+      commit('setLoading', true)
+      const updateObj = {}
+      if (payload.date) {
+        updateObj.date = payload.date
+      }
+      firebase.database().ref('events').child(payload.id).update(updateObj)
+        .then(() => {
+          commit('setLoading', false)
+          commit('updateDateEvent', payload)
         })
         .catch(error => {
           commit('setLoading', false)
@@ -347,13 +385,17 @@ export const store = new Vuex.Store({
         )
     },
     autoSignin ({commit}, payload) {
-      commit('setUser', {
-        id: payload.uid,
-        email: payload.email,
-        phone: payload.phone,
-        avatar: payload.avatar,
-        admin: payload.admin
-      })
+      firebase.database().ref('/users/' + payload.uid)
+        .once('value')
+        .then((data) => {
+          commit('setUser', {
+            id: payload.uid,
+            email: payload.email,
+            phone: data.val().phone,
+            avatar: data.val().avatar,
+            admin: data.val().admin
+          })
+        })
     },
     logout ({commit}) {
       firebase.auth().signOut()
@@ -367,6 +409,13 @@ export const store = new Vuex.Store({
     loadedEvents (state) {
       return state.loadedEvents.sort((eventA, eventB) => {
         return eventA.date > eventB.date
+      })
+    },
+    eventToCome (state, getters) {
+      const event = getters.loadedEvents
+      const today = moment()
+      return event.filter((e) => {
+        return moment(e.date).isAfter(today)
       })
     },
     nextEvents (state, getters) {
@@ -387,6 +436,9 @@ export const store = new Vuex.Store({
     },
     error (state) {
       return state.error
+    },
+    toaster (state) {
+      return state.toaster
     }
   }
 })

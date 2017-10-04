@@ -22,6 +22,11 @@ export default new Router({
       component: Home
     },
     {
+      path: '/signin',
+      name: 'Signin',
+      component: Signin
+    },
+    {
       path: '/events',
       name: 'Events',
       component: Events
@@ -47,27 +52,26 @@ export default new Router({
     {
       path: '/admin',
       name: 'Admin',
-      component: Admin
+      component: Admin,
+      beforeEnter: AuthGuard
     },
     {
       path: '/manageEvent',
       name: 'ManageEvent',
-      component: ManageEvent
+      component: ManageEvent,
+      beforeEnter: AuthGuard
     },
     {
       path: '/manageUser',
       name: 'ManageUser',
-      component: ManageUser
+      component: ManageUser,
+      beforeEnter: AuthGuard
     },
     {
       path: '/signup',
       name: 'Signup',
-      component: Signup
-    },
-    {
-      path: '/signin',
-      name: 'Signin',
-      component: Signin
+      component: Signup,
+      beforeEnter: AuthGuard
     }
   ],
   mode: 'history'

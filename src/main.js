@@ -3,10 +3,12 @@ import Vuetify from 'vuetify'
 import './stylus/main.styl'
 import App from './App'
 import * as firebase from 'firebase'
+import DateFilter from './filters/date'
 import router from './router'
 import { store } from './store'
 import Alert from './components/Shared/Alert.vue'
 import EditEventDialogue from './components/Event/EditEventDialogue.vue'
+import EditDateDialogue from './components/Event/EditDateDialogue.vue'
 import SubscribeDialogue from './components/Subscribe/SubscribeDialogue.vue'
 import SubscribeCommentDialogue from './components/Subscribe/SubscribeCommentDialogue.vue'
 import updateUserPassword from './components/User/UpdatePasswordDialogue.vue'
@@ -16,8 +18,11 @@ import DeleteEventDialog from './components/Event/DeleteEvent.vue'
 Vue.use(Vuetify)
 Vue.config.productionTip = false
 
+Vue.filter('date', DateFilter)
+
 Vue.component('app-alert', Alert)
 Vue.component('app-edit-event-dialogue', EditEventDialogue)
+Vue.component('app-edit-date-dialogue', EditDateDialogue)
 Vue.component('app-event-subscribe-dialogue', SubscribeDialogue)
 Vue.component('app-event-subscribe-comment-dialogue', SubscribeCommentDialogue)
 Vue.component('app-update-user-dialogue', updateUserPassword)

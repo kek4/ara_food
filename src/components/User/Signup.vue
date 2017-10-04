@@ -121,7 +121,7 @@ export default {
       password: '',
       confirmPassword: '',
       phone: '',
-      avatar: '',
+      avatar: 'https://firebasestorage.googleapis.com/v0/b/ara-food.appspot.com/o/Default%2Favatar.jpg?alt=media&token=ae30717b-88ff-4d57-bf85-5d9fdcda3583',
       admin: 0
     }
   },
