@@ -1,13 +1,13 @@
 <template>
   <v-dialog width="650" persistent v-model="editDialogue">
-    <v-btn fab accent slot="activator">
-      <v-icon>edit</v-icon>
+    <v-btn small fab accent slot="activator">
+      <v-icon>access_time</v-icon>
     </v-btn>
     <v-card>
       <v-container>
         <v-layout row wrap>
           <v-flex xs12>
-            <v-card-title>Edit Date</v-card-title>
+            <v-card-title>Modifier la date</v-card-title>
           </v-flex>
         </v-layout>
         <v-divider></v-divider>
@@ -25,8 +25,16 @@
         <v-layout row wrap>
           <v-flex xs12>
             <v-card-actions>
-              <v-btn flat @click="editDialogue = false">Close</v-btn>
-              <v-btn flat @click="onSaveChanges">Save</v-btn>
+              <v-btn flat @click="editDialogue = false">Fermer</v-btn>
+              <v-btn flat
+                     @click="onSaveChanges"
+                     :loading="loading"
+                     :disabled="loading">
+                Modifier
+                <span slot="loader" class="custom-loader">
+                  <v-icon light>cached</v-icon>
+                </span>
+              </v-btn>
             </v-card-actions>
           </v-flex>
         </v-layout>
@@ -54,6 +62,9 @@ export default {
       date.hours(timeArray[0])
       date.minutes(timeArray[1])
       return date.format('YYYY-M-DD HH:mm')
+    },
+    loading () {
+      return this.$store.getters.loading
     }
   },
   methods: {

@@ -8,7 +8,7 @@
       <v-card-title>
         <div class="headline">Attention</div>
       </v-card-title>
-      <v-card-text>Etes-vous sûr de vouloir supprimer cet évenemnt ?</v-card-text>
+      <v-card-text>Etes-vous sûr de vouloir supprimer cet événement ?</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">Non</v-btn>

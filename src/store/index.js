@@ -12,7 +12,8 @@ export const store = new Vuex.Store({
     user: null,
     loading: false,
     error: null,
-    toaster: null
+    toaster: null,
+    modal: false
   },
   mutations: {
     subscribeUserForEvent (state, payload) {
@@ -104,6 +105,9 @@ export const store = new Vuex.Store({
     },
     clearToaster (state) {
       state.toaster = null
+    },
+    setModal (state, payload) {
+      state.modal = payload
     }
   },
   actions: {
@@ -217,6 +221,10 @@ export const store = new Vuex.Store({
             ...event,
             id: key
           })
+          store.dispatch('subscribeUserForEvent', {
+            id: key,
+            comment: ''
+          })
           router.push({name: 'Events'})
           commit('setToaster', event.title + 'a été créer pour le ' + event.date)
           setTimeout(() => {
@@ -238,6 +246,9 @@ export const store = new Vuex.Store({
         commit('deleteEvent', {
           id: payload.id
         })
+        if (router.currentRoute.name === 'Event') {
+          router.push({name: 'Events'})
+        }
       })
       .catch((error) => {
         commit('setLoading', false)
@@ -292,6 +303,11 @@ export const store = new Vuex.Store({
         .then(() => {
           commit('setLoading', false)
           commit('updateProfileData', payload)
+          router.push({name: 'Home'})
+          commit('setToaster', 'Votre profil a bien été modifié')
+          setTimeout(() => {
+            commit('clearToaster')
+          }, 5000)
         })
         .catch(error => {
           commit('setLoading', false)
@@ -299,14 +315,29 @@ export const store = new Vuex.Store({
         })
     },
     updateUserPassword ({commit, getters}, payload) {
-      firebase.auth().currentUser.updatePassword(payload.password)
+      commit('setLoading', true)
+      firebase.auth().signInWithEmailAndPassword(getters.user.email, payload.password)
         .then(() => {
-          commit('setLoading', false)
+          firebase.auth().currentUser.updatePassword(payload.newPassword)
+            .then(() => {
+              commit('setLoading', false)
+              commit('setModal', false)
+              commit('setToaster', 'Le mot de passe a bien été modifié')
+              setTimeout(() => {
+                commit('clearToaster')
+              }, 5000)
+            })
+            .catch(error => {
+              commit('setLoading', false)
+              console.log(error)
+            })
         })
-        .catch(error => {
-          commit('setLoading', false)
-          console.log(error)
-        })
+        .catch(
+          error => {
+            commit('setLoading', false)
+            commit('setError', error)
+          }
+        )
     },
     signUserUp ({commit}, payload) {
       commit('setLoading', true)
@@ -333,6 +364,10 @@ export const store = new Vuex.Store({
                 }
                 commit('setLoading', false)
                 commit('setUser', newUser)
+                commit('setToaster', 'L\'utilisateur ' + payload.username + ' à bien été crée')
+                setTimeout(() => {
+                  commit('clearToaster')
+                }, 5000)
               }
             )
             .catch(
@@ -403,6 +438,9 @@ export const store = new Vuex.Store({
     },
     clearError ({commit}) {
       commit('clearError')
+    },
+    setModal ({commit}, payload) {
+      commit('setModal', payload)
     }
   },
   getters: {
@@ -439,6 +477,9 @@ export const store = new Vuex.Store({
     },
     toaster (state) {
       return state.toaster
+    },
+    modal (state) {
+      return state.modal
     }
   }
 })

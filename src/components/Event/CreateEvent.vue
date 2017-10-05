@@ -1,18 +1,18 @@
 <template>
   <v-container>
     <v-layout row>
-      <v-flex xs12 sm6 offset-sm3>
-        <h4 class="primaty--text">Create new event</h4>
+      <v-flex xs12 class="text-xs-center">
+        <h4 class="primaty--text">On mange où?</h4>
       </v-flex>
     </v-layout>
     <v-layout row>
-      <v-flex xs12>
+      <v-flex xs12 md8 offset-md2>
         <form @submit.prevent="onCreateEvent">
           <v-layout row>
             <v-flex xs12>
               <v-text-field
                 name="title"
-                label="Title"
+                label="Titre"
                 id="title"
                 v-model="title"
                 required></v-text-field>
@@ -84,10 +84,10 @@
             <v-flex xs12>
               <v-text-field
                 name="imageUrl"
-                label="Image URL"
+                label="Une image?"
                 id="image-url"
-                v-model="imageUrl"
-                required></v-text-field>
+                v-model="imageUrl">
+              </v-text-field>
             </v-flex>
           </v-layout>
           <v-layout row>
@@ -96,15 +96,19 @@
             </v-flex>
           </v-layout>
           <v-layout row>
-            <v-flex xs12 sm6 offset-sm3>
+            <v-flex xs12 sm6 offset-sm3 class="text-xs-center">
               <v-btn
                 class="primary"
-                :disabled="!formIsValid"
+                :disabled="!formIsValid || loading"
                 type="submit"
-              >Create</v-btn>
+                :loading="loading">
+                Créer
+                <span slot="loader" class="custom-loader">
+                  <v-icon light>cached</v-icon>
+                </span>
+              </v-btn>
             </v-flex>
           </v-layout>
-          {{ formatedDate }}
         </form>
       </v-flex>
     </v-layout>
@@ -133,7 +137,7 @@ export default {
   },
   computed: {
     formIsValid () {
-      return this.title !== '' && this.description !== '' && this.imageUrl !== ''
+      return this.title !== '' && this.description !== ''
     },
     formatedDate () {
       const date = moment(this.date)
@@ -141,6 +145,9 @@ export default {
       date.hours(timeArray[0])
       date.minutes(timeArray[1])
       return date.format('YYYY-M-DD HH:mm')
+    },
+    loading () {
+      return this.$store.getters.loading
     }
   },
   methods: {

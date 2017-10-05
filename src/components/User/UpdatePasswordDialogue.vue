@@ -1,23 +1,39 @@
 <template>
   <v-dialog width="350" persistent v-model="passwordDialogue">
-    <v-btn fab accent slot="activator">
+    <v-btn small accent slot="activator" @click="openModal">
       <v-icon>edit</v-icon>
     </v-btn>
     <v-card>
       <v-container>
-        <v-layout row wrap>
-          <v-flex xs12>
-            <v-card-title>Update Password</v-card-title>
+        <v-layout row v-if="error">
+          <v-flex  xs12>
+            <app-alert @dismissed="onDismissed" :text="error.message"></app-alert>
           </v-flex>
         </v-layout>
-        <v-divider></v-divider>
+        <v-layout row wrap>
+          <v-flex xs12 class="text-xs-center">
+            <v-card-title>Modifier le mot de passe</v-card-title>
+          </v-flex>
+        </v-layout>
         <v-layout row wrap>
           <v-flex xs12>
             <v-text-field
               name="password"
-              label="Password"
+              label="Mot de passe"
               id="password"
               v-model="password"
+              type="password"
+              required>
+            </v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row wrap>
+          <v-flex xs12>
+            <v-text-field
+              name="newPassword"
+              label="Nouveau mot de passe"
+              id="newPassword"
+              v-model="newPassword"
               type="password"
               required>
             </v-text-field>
@@ -27,7 +43,7 @@
           <v-flex xs12>
             <v-text-field
               name="confirmPassword"
-              label="Confirm Password"
+              label="Confirmer le mot de passe"
               id="confirmPassword"
               v-model="confirmPassword"
               type="password"
@@ -35,12 +51,16 @@
             </v-text-field>
           </v-flex>
         </v-layout>
-        <v-divider></v-divider>
         <v-layout row wrap>
           <v-flex xs12>
             <v-card-actions>
-              <v-btn flat @click="passwordDialogue = false">Close</v-btn>
-              <v-btn flat @click="onSaveChanges">Save</v-btn>
+              <v-btn flat @click="closeModal">Fermer</v-btn>
+              <v-btn flat :disabled="loading" :loading="loading" @click="onSaveChanges">
+                Modifier
+                <span slot="loader" class="custom-loader">
+                  <v-icon light>cached</v-icon>
+                </span>
+              </v-btn>
             </v-card-actions>
           </v-flex>
         </v-layout>
@@ -54,22 +74,40 @@
     props: ['event'],
     data () {
       return {
-        passwordDialogue: false,
         password: '',
+        newPassword: '',
         confirmPassword: ''
       }
     },
     computed: {
       comparePasswords () {
-        return this.password !== this.confirmPassword ? 'Password do not match' : true
+        return this.newPassword !== this.confirmPassword ? 'Les mots de passe ne correspondent pas' : true
+      },
+      passwordDialogue () {
+        return this.$store.getters.modal
+      },
+      error () {
+        return this.$store.getters.error
+      },
+      loading () {
+        return this.$store.getters.loading
       }
     },
     methods: {
       onSaveChanges () {
-        this.passwordDialogue = false
         this.$store.dispatch('updateUserPassword', {
-          password: this.password
+          password: this.password,
+          newPassword: this.newPassword
         })
+      },
+      closeModal () {
+        this.$store.dispatch('setModal', false)
+      },
+      openModal () {
+        this.$store.dispatch('setModal', true)
+      },
+      onDismissed () {
+        this.$store.dispatch('clearError')
       }
     }
   }

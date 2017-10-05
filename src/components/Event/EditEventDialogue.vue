@@ -1,6 +1,6 @@
 <template>
   <v-dialog width="350" persistent v-model="editDialogue">
-    <v-btn fab accent slot="activator">
+    <v-btn fab small accent slot="activator">
       <v-icon>edit</v-icon>
     </v-btn>
     <v-card>
@@ -35,7 +35,15 @@
           <v-flex xs12>
             <v-card-actions>
               <v-btn flat @click="editDialogue = false">Close</v-btn>
-              <v-btn flat @click="onSaveChanges">Save</v-btn>
+              <v-btn flat
+                     @click="onSaveChanges"
+                     :loading="loading"
+                     :disabled="loading">
+                Modifier
+                <span slot="loader" class="custom-loader">
+                  <v-icon light>cached</v-icon>
+                </span>
+              </v-btn>
             </v-card-actions>
           </v-flex>
         </v-layout>
@@ -65,6 +73,11 @@
           description: this.editedDescription,
           id: this.event.id
         })
+      }
+    },
+    computed: {
+      loading () {
+        return this.$store.getters.loading
       }
     }
   }

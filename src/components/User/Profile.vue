@@ -1,11 +1,21 @@
 <template>
   <v-container>
-    <app-update-user-dialogue></app-update-user-dialogue>
     <v-layout row>
-      <v-flex xs12>
+      <v-flex xs12 class="text-xs-center">
+        <h4 class="primaty--text">Edition du profile</h4>
+      </v-flex>
+    </v-layout>
+    <v-layout row>
+      <v-flex xs12 md8 offset-md2>
+        <span class="subheader">Changer le mot de passe</span>
+        <app-update-user-dialogue></app-update-user-dialogue>
+      </v-flex>
+    </v-layout>
+    <v-layout row>
+      <v-flex xs12 md8 offset-md2>
         <v-text-field
           name="phone"
-          label="Phone"
+          label="Telephone"
           id="phone"
           v-model="editedPhone"
           type="text">
@@ -13,25 +23,25 @@
       </v-flex>
     </v-layout>
     <v-layout row>
-      <v-flex xs12>
+      <v-flex xs12 md8 offset-md2>
         <v-text-field
           name="avatar"
           label="Avatar"
           id="image-avatar"
           v-model="editedAvatar"
-          required></v-text-field>
+          ></v-text-field>
       </v-flex>
     </v-layout>
     <v-layout row>
-      <v-flex xs12>
+      <v-flex xs12 md8 offset-md2>
         <img :src="editedAvatar" height="150">
       </v-flex>
     </v-layout>
     <v-divider></v-divider>
     <v-layout row wrap>
-      <v-flex xs12>
+      <v-flex xs12 md8 offset-md2>
         <v-card-actions>
-          <v-btn flat @click="onSaveChanges">Save</v-btn>
+          <v-btn flat @click="onSaveChanges">Modifier</v-btn>
         </v-card-actions>
       </v-flex>
     </v-layout>

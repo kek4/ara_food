@@ -1,5 +1,12 @@
 <template>
   <v-app>
+    <v-snackbar
+      top
+      @dismissed="onDismissed"
+      v-model="toaster">
+      {{ toaster }}
+      <v-btn flat class="pink--text" @click.native="onDismissed">Close</v-btn>
+    </v-snackbar>
     <v-toolbar dark class="primary">
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">Ara Food</router-link>
@@ -18,21 +25,23 @@
         <v-btn flat
                v-if="userIsAdmin"
                to="/admin">
-          <v-icon left>exit_to_app</v-icon>
+          <v-icon left>lock_outline</v-icon>
           Admin
         </v-btn>
         <v-btn flat
               v-if="userIsAuthenticated"
               @click="onLogout">
           <v-icon left>exit_to_app</v-icon>
-        Logout
+        Se déconnecter
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <main>
-      <router-view></router-view>
+      <v-container class="pb-4">
+        <router-view></router-view>
+      </v-container>
     </main>
-    <v-footer>
+    <v-footer fixed dark class="primary">
       <div>J&R</div>
       <v-spacer></v-spacer>
       <div>2017</div>
@@ -49,12 +58,12 @@
     computed: {
       menuItems () {
         let menuItems = [
-          {icon: 'lock_open', title: 'Sign in', link: '/signin'}
+          {icon: 'lock_open', title: 'Se connecter', link: '/signin'}
         ]
         if (this.userIsAuthenticated) {
           menuItems = [
-            {icon: 'supervisor_account', title: 'View events', link: '/events'},
-            {icon: 'room', title: 'Organize event', link: '/events/new'},
+            {icon: 'restaurant', title: 'Voir les événements', link: '/events'},
+            {icon: 'local_dining', title: 'Créer un événement', link: '/events/new'},
             {icon: 'person', title: 'Profile', link: '/profile'}
           ]
         }
@@ -67,11 +76,17 @@
         if (this.userIsAuthenticated) {
           return this.$store.getters.user.admin === 1
         }
+      },
+      toaster () {
+        return this.$store.getters.toaster
       }
     },
     methods: {
       onLogout () {
         this.$store.dispatch('logout')
+      },
+      onDismissed () {
+        this.$store.dispatch('clearToaster')
       }
     },
     watch: {
@@ -83,3 +98,8 @@
     }
   }
 </script>
+<style scoped>
+  .container {
+    min-height: 70vh !important;
+  }
+</style>

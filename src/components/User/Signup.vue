@@ -96,7 +96,7 @@
                 <v-layout row>
                   <v-flex xs12>
                     <v-btn type="submit" :disabled="loading" :loading="loading">
-                      Sign up
+                      Créer
                       <span slot="loader" class="custom-loader">
                         <v-icon light>cached</v-icon>
                       </span>
@@ -139,13 +139,6 @@ export default {
       return this.$store.getters.loading
     }
   },
-  watch: {
-    user (value) {
-      if (value !== null && value !== undefined) {
-        this.$router.push('/')
-      }
-    }
-  },
   methods: {
     onSignup () {
       this.$store.dispatch('signUserUp', {
@@ -155,6 +148,13 @@ export default {
         phone: this.phone,
         avatar: this.avatar,
         admin: this.admin})
+      this.username = ''
+      this.email = ''
+      this.password = ''
+      this.confirmPassword = ''
+      this.phone = ''
+      this.avatar = 'https://firebasestorage.googleapis.com/v0/b/ara-food.appspot.com/o/Default%2Favatar.jpg?alt=media&token=ae30717b-88ff-4d57-bf85-5d9fdcda3583'
+      this.admin = 0
     },
     onDismissed () {
       this.$store.dispatch('clearError')
