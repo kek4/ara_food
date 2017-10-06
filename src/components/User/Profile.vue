@@ -41,7 +41,15 @@
     <v-layout row wrap>
       <v-flex xs12 md8 offset-md2>
         <v-card-actions>
-          <v-btn flat @click="onSaveChanges">Modifier</v-btn>
+          <v-btn flat
+                 @click="onSaveChanges"
+                 :loading="loading"
+                 :disabled="loading">
+            Modifier
+            <span slot="loader" class="custom-loader">
+                  <v-icon light>cached</v-icon>
+                </span>
+          </v-btn>
         </v-card-actions>
       </v-flex>
     </v-layout>
@@ -54,6 +62,11 @@ export default {
     return {
       editedAvatar: this.$store.getters.user.avatar,
       editedPhone: this.$store.getters.user.phone
+    }
+  },
+  computed: {
+    loading () {
+      return this.$store.getters.loading
     }
   },
   methods: {
