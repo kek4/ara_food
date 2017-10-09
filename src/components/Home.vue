@@ -17,23 +17,23 @@
     </v-layout>
     <v-layout row wrap class="mt-2 carousel-height" v-if="!loading">
       <v-flex xs12 md8 offset-md2>
-        <v-carousel style="cursor: pointer;">
+        <v-carousel hide-controls style="cursor: pointer;">
           <v-carousel-item
             v-for="event in events"
             :src="event.imageUrl"
             :key="event.id"
             @click="onLoadEvent(event.id)"
-            class="carousel-item">
-            <div class="carousel-title">
+            class="carousel-item secondary">
+            <v-chip class="text-xs-center carousel-title" color="primary" text-color="white">
               {{ event.title }}
-            </div>
+            </v-chip>
             <v-chip class="primary white--text text-xs-right carousel-sub">
               {{ event.subscribers.length }}
               <v-icon right>assignment_ind</v-icon>
             </v-chip>
-            <div class="carousel-date">
+            <v-chip class="text-xs-center carousel-date" color="primary" text-color="white">
               {{ event.date | date }}
-            </div>
+            </v-chip>
           </v-carousel-item>
         </v-carousel>
       </v-flex>
@@ -62,25 +62,22 @@
 <style scoped>
   .carousel-date {
     position: absolute;
-    bottom: 50px;
-    background-color: rgba(0,0,0,0.5);
-    color: white;
+    bottom: 2%;
     font-size: 2em;
     padding: 20px;
   }
   .carousel-sub {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 2%;
+    right: 2%;
     font-size: 2em;
     padding: 20px;
   }
   .carousel-title {
     position: absolute;
-    top: 0;
-    background-color: rgba(0,0,0,0.5);
-    color: white;
-    font-size: 2.5em;
+    top: 2%;
+    left: 2%;
+    font-size: 2em;
     padding: 20px;
   }
   .carousel__item {

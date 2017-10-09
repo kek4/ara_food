@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="dialog" lazy absolute>
-    <v-btn flat slot="activator">
+    <v-btn accent slot="activator">
       <v-icon left class="material-icons">delete</v-icon>
       {{ title }}
     </v-btn>

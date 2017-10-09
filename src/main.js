@@ -36,6 +36,7 @@ new Vue({
   store,
   render: h => h(App),
   created () {
+    // let vm = this
     firebase.initializeApp({
       apiKey: 'AIzaSyAl88Ba1yzhJjQ9AgA-Yzlo9V58vKWVAi4',
       authDomain: 'ara-food.firebaseapp.com',
@@ -45,10 +46,12 @@ new Vue({
     })
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        // rajouter les infos de users ds firebase
         this.$store.dispatch('autoSignin', user)
       }
     })
     this.$store.dispatch('loadEvents')
+    // firebase.database().ref('events').on('value', function (snapshot) {
+    //   vm.$store.dispatch('loadEvents')
+    // })
   }
 })

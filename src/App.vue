@@ -41,11 +41,11 @@
         <router-view></router-view>
       </v-container>
     </main>
-    <v-footer fixed dark class="primary">
-      <div>J&R</div>
-      <v-spacer></v-spacer>
-      <div>2017</div>
-    </v-footer>
+    <!--<v-footer fixed dark class="primary">-->
+      <!--<div>J&R</div>-->
+      <!--<v-spacer></v-spacer>-->
+      <!--<div>2017</div>-->
+    <!--</v-footer>-->
   </v-app>
 </template>
 

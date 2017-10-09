@@ -27,9 +27,13 @@
               <v-spacer></v-spacer>
               <app-edit-date-dialogue v-if="userIsCreator" :event="event"></app-edit-date-dialogue>
             </v-layout>
-            <v-divider></v-divider>
-            <div class="subheading">{{ event.description }}</div>
-            <v-divider></v-divider>
+            <v-layout row wrap>
+              <v-flex xs12>
+                <v-divider></v-divider>
+                <v-subheader>{{ event.description }}</v-subheader>
+                <v-divider></v-divider>
+              </v-flex>
+            </v-layout>
             <v-subheader>Participants</v-subheader>
             <v-layout row wrap>
               <v-flex xs12>
@@ -40,11 +44,11 @@
             </v-layout>
           </v-card-text>
           <v-card-actions v-if="userIsAuthenticated">
+            <app-delete-event-dialog v-if="userIsCreator" :eventId="event.id" title="Supprimer"></app-delete-event-dialog>
             <v-spacer></v-spacer>
             <app-event-subscribe-dialogue :eventId="event.id"></app-event-subscribe-dialogue>
             <app-event-subscribe-comment-dialogue :eventId="event.id"></app-event-subscribe-comment-dialogue>
           </v-card-actions>
-          <app-delete-event-dialog v-if="userIsCreator" :eventId="event.id" title=""></app-delete-event-dialog>
         </v-card>
       </v-flex>
     </v-layout>

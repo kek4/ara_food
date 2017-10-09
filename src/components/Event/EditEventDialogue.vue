@@ -1,6 +1,6 @@
 <template>
   <v-dialog width="350" persistent v-model="editDialogue">
-    <v-btn fab small accent slot="activator">
+    <v-btn accent fab small accent slot="activator">
       <v-icon>edit</v-icon>
     </v-btn>
     <v-card>
