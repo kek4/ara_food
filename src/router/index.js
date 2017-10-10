@@ -11,6 +11,7 @@ import ManageUser from '@/components/Admin/ManageUser'
 import Signin from '@/components/User/Signin'
 import Signup from '@/components/User/Signup'
 import AuthGuard from './auth-guard'
+import AdminGuard from './admin-guard'
 
 Vue.use(Router)
 
@@ -53,19 +54,19 @@ export default new Router({
       path: '/admin',
       name: 'Admin',
       component: Admin,
-      beforeEnter: AuthGuard
+      beforeEnter: AdminGuard
     },
     {
       path: '/manageEvent',
       name: 'ManageEvent',
       component: ManageEvent,
-      beforeEnter: AuthGuard
+      beforeEnter: AdminGuard
     },
     {
       path: '/manageUser',
       name: 'ManageUser',
       component: ManageUser,
-      beforeEnter: AuthGuard
+      beforeEnter: AdminGuard
     },
     {
       path: '/signup',

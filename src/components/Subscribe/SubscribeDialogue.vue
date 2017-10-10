@@ -7,8 +7,12 @@
       <v-container>
         <v-layout row wrap>
           <v-flex xs12>
-            <v-card-title v-if="userIsSubscribe">Ne plus participer</v-card-title>
-            <v-card-title v-else>Participer</v-card-title>
+            <v-card-title v-if="userIsSubscribe"  class="center-content">
+              <h6>Ne plus participer</h6>
+            </v-card-title>
+            <v-card-title v-else  class="center-content">
+              <h6>Participer</h6>
+            </v-card-title>
           </v-flex>
         </v-layout>
         <v-divider></v-divider>
@@ -26,7 +30,7 @@
         <v-divider></v-divider>
         <v-layout row wrap>
           <v-flex xs12>
-            <v-card-actions>
+            <v-card-actions  class="center-content">
               <v-btn flat @click="subscribeDialogue = false">Fermer</v-btn>
               <v-btn flat
                      @click="onAgree"

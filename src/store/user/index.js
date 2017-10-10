@@ -159,7 +159,8 @@ export default {
             email: payload.email,
             phone: data.val().phone,
             avatar: data.val().avatar,
-            admin: data.val().admin
+            admin: data.val().admin,
+            username: data.val().username
           })
         })
     },

@@ -2,12 +2,12 @@
   <v-container>
     <v-layout row wrap>
       <v-flex xs12 sm10 md8 offset-sm1 offset-md2>
-        <v-card class="secondary mb-2" v-for="event in events" :key="event.id">
+        <v-card class="info mb-2" v-for="event in events" :key="event.id">
           <v-layout row>
             <v-flex xs5 sm4 md3>
-              <v-chip class="primary sub">
+              <v-chip class="accent sub">
                 {{ event.subscribers.length }}
-                <v-icon right>assignment_ind</v-icon>
+                <v-icon color="white" right>assignment_ind</v-icon>
               </v-chip>
               <v-card-media
               :src="event.imageUrl"

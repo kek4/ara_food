@@ -6,6 +6,11 @@
       </v-flex>
     </v-layout>
     <v-layout row>
+      <v-flex xs12 md8 offset-md2 mb-3>
+        <v-chip color="primary" text-color="white" @click="setEvent" style="cursor: pointer;">La voie verte</v-chip>
+      </v-flex>
+    </v-layout>
+    <v-layout row>
       <v-flex xs12 md8 offset-md2>
         <form @submit.prevent="onCreateEvent">
           <v-layout row>
@@ -162,6 +167,11 @@ export default {
         date: this.formatedDate
       }
       this.$store.dispatch('createEvent', eventData)
+    },
+    setEvent () {
+      this.title = 'La voie verte'
+      this.description = 'Qui vient chercher son repas à la voie verte ce midi?'
+      this.imageUrl = 'http://www.voieverte.fr/wp-content/uploads/2016/05/VoieVerte-menu-semaine' + moment().week() + '.jpg'
     }
   },
   mounted () {

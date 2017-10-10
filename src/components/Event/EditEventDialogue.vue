@@ -7,7 +7,9 @@
       <v-container>
         <v-layout row wrap>
           <v-flex xs12>
-            <v-card-title>Edit Event</v-card-title>
+            <v-card-title class="center-content">
+              <h6>Modifier l'événement</h6>
+            </v-card-title>
           </v-flex>
         </v-layout>
         <v-divider></v-divider>
@@ -33,8 +35,8 @@
         <v-divider></v-divider>
         <v-layout row wrap>
           <v-flex xs12>
-            <v-card-actions>
-              <v-btn flat @click="editDialogue = false">Close</v-btn>
+            <v-card-actions class="center-content">
+              <v-btn flat @click="editDialogue = false">Fermer</v-btn>
               <v-btn flat
                      @click="onSaveChanges"
                      :loading="loading"

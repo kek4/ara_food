@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <v-layout row wrap>
+    <v-layout row wrap class="primary--text">
       <v-flex xs12>
-        <h2 class="text-xs-center">Evenements à venir !</h2>
+        <h2 class="text-xs-center">Prochainement</h2>
       </v-flex>
     </v-layout>
     <v-layout>
@@ -23,7 +23,7 @@
             :src="event.imageUrl"
             :key="event.id"
             @click="onLoadEvent(event.id)"
-            class="carousel-item secondary">
+            class="carousel-item info">
             <v-chip class="text-xs-center carousel-title" color="primary" text-color="white">
               {{ event.title }}
             </v-chip>

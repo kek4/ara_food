@@ -6,6 +6,11 @@
       </v-flex>
     </v-layout>
     <v-layout row>
+      <v-flex xs12 class="text-xs-center">
+        <h5 class="primaty--text">{{ username }}</h5>
+      </v-flex>
+    </v-layout>
+    <v-layout row>
       <v-flex xs12 md8 offset-md2>
         <span class="subheader">Changer le mot de passe</span>
         <app-update-user-dialogue></app-update-user-dialogue>
@@ -61,7 +66,8 @@ export default {
   data () {
     return {
       editedAvatar: this.$store.getters.user.avatar,
-      editedPhone: this.$store.getters.user.phone
+      editedPhone: this.$store.getters.user.phone,
+      username: this.$store.getters.user.username
     }
   },
   computed: {

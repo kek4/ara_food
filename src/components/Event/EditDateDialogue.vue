@@ -7,13 +7,15 @@
       <v-container>
         <v-layout row wrap>
           <v-flex xs12>
-            <v-card-title>Modifier la date</v-card-title>
+            <v-card-title  class="center-content">
+              <h6>Modifier la date</h6>
+            </v-card-title>
           </v-flex>
         </v-layout>
         <v-divider></v-divider>
         <v-layout row wrap>
           <v-flex md12 lg8 class="hidden-xs-only">
-            <v-date-picker v-model="editedDate" landscape></v-date-picker>
+            <v-date-picker v-model="editedDate" landscape :allowed-dates="allowedDates"></v-date-picker>
           </v-flex>
         </v-layout>
         <v-layout row wrap>
@@ -24,7 +26,7 @@
         <v-divider></v-divider>
         <v-layout row wrap>
           <v-flex xs12>
-            <v-card-actions>
+            <v-card-actions  class="center-content">
               <v-btn flat @click="editDialogue = false">Fermer</v-btn>
               <v-btn flat
                      @click="onSaveChanges"
@@ -51,7 +53,11 @@ export default {
     return {
       editDialogue: false,
       editedDate: null,
-      editedTime: null
+      editedTime: null,
+      allowedDates: {
+        min: null,
+        max: null
+      }
     }
   },
   computed: {
@@ -77,6 +83,12 @@ export default {
     }
   },
   created () {
+  },
+  mounted () {
+    const d = new Date()
+    console.log(moment(d).hour())
+    this.allowedDates.min = new Date()
+    this.allowedDates.max = d.setDate(d.getDate() + 30)
     const date = this.event.date.split(' ')
     this.editedDate = date[0]
     this.editedTime = date[1]
