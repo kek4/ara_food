@@ -6,9 +6,7 @@ export default {
     user: null
   },
   mutations: {
-    updateProfileData (state, payload) {
-      console.log(state.user.phone)
-      console.log(payload.phone)
+    updateProfilData (state, payload) {
       if (payload.phone) {
         state.user.phone = payload.phone
       }
@@ -21,7 +19,7 @@ export default {
     }
   },
   actions: {
-    updateProfileData ({commit, getters}, payload) {
+    updateProfilData ({commit, getters}, payload) {
       commit('setLoading', true)
       const updateObj = {}
       if (payload.phone) {
@@ -33,7 +31,7 @@ export default {
       firebase.database().ref('users').child(getters.user.id).update(updateObj)
         .then(() => {
           commit('setLoading', false)
-          commit('updateProfileData', payload)
+          commit('updateProfilData', payload)
           router.push({name: 'Home'})
           commit('setToaster', 'Votre profil a bien été modifié')
           setTimeout(() => {

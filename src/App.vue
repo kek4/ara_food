@@ -64,7 +64,7 @@
           menuItems = [
             {icon: 'restaurant', title: 'Voir les événements', link: '/events'},
             {icon: 'local_dining', title: 'Créer un événement', link: '/events/new'},
-            {icon: 'person', title: 'Profile', link: '/profile'}
+            {icon: 'person', title: 'Profil', link: '/profil'}
           ]
         }
         return menuItems

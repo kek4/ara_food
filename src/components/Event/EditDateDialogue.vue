@@ -83,15 +83,19 @@ export default {
     }
   },
   created () {
-  },
-  mounted () {
-    const d = new Date()
-    console.log(moment(d).hour())
-    this.allowedDates.min = new Date()
-    this.allowedDates.max = d.setDate(d.getDate() + 30)
     const date = this.event.date.split(' ')
     this.editedDate = date[0]
     this.editedTime = date[1]
+  },
+  mounted () {
+    const d = new Date()
+    if (moment(d).hour() > 12) {
+      this.allowedDates.min = new Date()
+      this.allowedDates.min.setDate(this.allowedDates.min.getDate() + 1)
+    } else {
+      this.allowedDates.min = new Date()
+    }
+    this.allowedDates.max = d.setDate(d.getDate() + 30)
   }
 }
 </script>

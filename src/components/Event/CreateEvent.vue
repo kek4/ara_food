@@ -122,7 +122,6 @@
 
 <script>
 import moment from 'moment'
-
 const today = moment().format('YYYY-M-DD')
 export default {
   data () {
@@ -160,10 +159,16 @@ export default {
       if (!this.formIsValid) {
         return
       }
+      let img
+      if (this.imageUrl === '') {
+        img = 'https://firebasestorage.googleapis.com/v0/b/ara-food.appspot.com/o/Default%2Fplaceholder.jpg?alt=media&token=8bfe324b-c282-484c-bc87-9ee04c6dca92'
+      } else {
+        img = this.imageUrl
+      }
       const eventData = {
         title: this.title,
         description: this.description,
-        imageUrl: this.imageUrl,
+        imageUrl: img,
         date: this.formatedDate
       }
       this.$store.dispatch('createEvent', eventData)
@@ -176,7 +181,12 @@ export default {
   },
   mounted () {
     const d = new Date()
-    this.allowedDates.min = new Date()
+    if (moment(d).hour() > 12) {
+      this.allowedDates.min = new Date()
+      this.allowedDates.min.setDate(this.allowedDates.min.getDate() + 1)
+    } else {
+      this.allowedDates.min = new Date()
+    }
     this.allowedDates.max = d.setDate(d.getDate() + 30)
   }
 }

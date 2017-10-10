@@ -84,7 +84,7 @@
             {icon: 'dashboard', title: 'Accueil admin', link: '/admin'},
             {icon: 'event', title: 'Liste des évenements', link: '/manageEvent'},
             {icon: 'room', title: 'Liste utilisateurs', link: '/manageUser'},
-            {icon: 'person', title: 'Profile', link: '/profile'},
+            {icon: 'person', title: 'Profil', link: '/profil'},
             {icon: 'person_add', title: 'Sign up', link: '/signup'}
         ]
         return menuItems

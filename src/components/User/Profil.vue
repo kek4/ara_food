@@ -2,7 +2,7 @@
   <v-container>
     <v-layout row>
       <v-flex xs12 class="text-xs-center">
-        <h4 class="primaty--text">Edition du profile</h4>
+        <h4 class="primaty--text">Edition du profil</h4>
       </v-flex>
     </v-layout>
     <v-layout row>
@@ -12,7 +12,6 @@
     </v-layout>
     <v-layout row>
       <v-flex xs12 md8 offset-md2>
-        <span class="subheader">Changer le mot de passe</span>
         <app-update-user-dialogue></app-update-user-dialogue>
       </v-flex>
     </v-layout>
@@ -45,7 +44,7 @@
     <v-divider></v-divider>
     <v-layout row wrap>
       <v-flex xs12 md8 offset-md2>
-        <v-card-actions>
+        <v-card-actions class="center-content">
           <v-btn flat
                  @click="onSaveChanges"
                  :loading="loading"
@@ -77,7 +76,7 @@ export default {
   },
   methods: {
     onSaveChanges () {
-      this.$store.dispatch('updateProfileData', {
+      this.$store.dispatch('updateProfilData', {
         password: this.password,
         phone: this.editedPhone,
         avatar: this.editedAvatar

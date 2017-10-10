@@ -62,7 +62,7 @@
                       <v-list-tile-content xs5>
                         <v-list-tile-title class="white--text mb-0"><h5>{{ event.title }}</h5></v-list-tile-title>
                         <v-list-tile-sub-title>{{ event.date }}</v-list-tile-sub-title>
-                        
+
                       </v-list-tile-content>
                       <v-list-tile-content xs5>
                         <v-chip class="primary white--text text-xs-right">
@@ -109,7 +109,7 @@
             {icon: 'dashboard', title: 'Accueil admin', link: '/admin'},
             {icon: 'event', title: 'Liste des évenements', link: '/manageEvent'},
             {icon: 'room', title: 'Liste utilisateurs', link: '/manageUser'},
-            {icon: 'person', title: 'Profile', link: '/profile'}
+            {icon: 'person', title: 'Profil', link: '/profil'}
         ]
         return menuItems
       }
