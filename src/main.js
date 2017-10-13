@@ -36,13 +36,13 @@ new Vue({
   store,
   render: h => h(App),
   created () {
-    // let vm = this
+    let vm = this
     firebase.initializeApp({
       apiKey: 'AIzaSyAl88Ba1yzhJjQ9AgA-Yzlo9V58vKWVAi4',
       authDomain: 'ara-food.firebaseapp.com',
       databaseURL: 'https://ara-food.firebaseio.com',
       projectId: 'ara-food',
-      storageBucket: ''
+      storageBucket: 'gs://ara-food.appspot.com'
     })
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -50,8 +50,8 @@ new Vue({
       }
     })
     this.$store.dispatch('loadEvents')
-    // firebase.database().ref('events').on('value', function (snapshot) {
-    //   vm.$store.dispatch('loadEvents')
-    // })
+    firebase.database().ref('events').on('value', function (snapshot) {
+      vm.$store.dispatch('loadEvents')
+    })
   }
 })

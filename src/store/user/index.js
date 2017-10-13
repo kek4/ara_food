@@ -22,26 +22,54 @@ export default {
     updateProfilData ({commit, getters}, payload) {
       commit('setLoading', true)
       const updateObj = {}
+      let typeOfAvatar = ''
       if (payload.phone) {
         updateObj.phone = payload.phone
       }
       if (payload.avatar) {
-        updateObj.avatar = payload.avatar
+        typeOfAvatar = payload.avatar.slice(0, payload.avatar.indexOf(':'))
       }
-      firebase.database().ref('users').child(getters.user.id).update(updateObj)
-        .then(() => {
-          commit('setLoading', false)
-          commit('updateProfilData', payload)
-          router.push({name: 'Home'})
-          commit('setToaster', 'Votre profil a bien été modifié')
-          setTimeout(() => {
-            commit('clearToaster')
-          }, 5000)
-        })
-        .catch(error => {
-          commit('setLoading', false)
-          console.log(error)
-        })
+      if (typeOfAvatar === 'data') {
+        const filename = payload.image.name
+        const ext = filename.slice(filename.lastIndexOf('.'))
+        firebase.storage().ref('Avatars/' + getters.user.username + ext).put(payload.image)
+           .then(fileData => {
+             updateObj.avatar = fileData.metadata.downloadURLs[0]
+             firebase.database().ref('users').child(getters.user.id).update(updateObj)
+               .then(() => {
+                 commit('setLoading', false)
+                 commit('updateProfilData', updateObj)
+                 router.push({name: 'Home'})
+                 commit('setToaster', 'Votre profil a bien été modifié')
+                 setTimeout(() => {
+                   commit('clearToaster')
+                 }, 5000)
+               })
+               .catch(error => {
+                 commit('setLoading', false)
+                 console.log(error)
+               })
+           })
+           .catch((error) => {
+             console.log(error)
+           })
+      } else {
+        updateObj.avatar = payload.avatar
+        firebase.database().ref('users').child(getters.user.id).update(updateObj)
+          .then(() => {
+            commit('setLoading', false)
+            commit('updateProfilData', updateObj)
+            router.push({name: 'Home'})
+            commit('setToaster', 'Votre profil a bien été modifié')
+            setTimeout(() => {
+              commit('clearToaster')
+            }, 5000)
+          })
+          .catch(error => {
+            commit('setLoading', false)
+            console.log(error)
+          })
+      }
     },
     updateUserPassword ({commit, getters}, payload) {
       commit('setLoading', true)
@@ -128,7 +156,8 @@ export default {
                   email: obj.email,
                   phone: obj.phone,
                   avatar: obj.avatar,
-                  admin: obj.admin
+                  admin: obj.admin,
+                  username: obj.username
                 }
                 commit('setLoading', false)
                 commit('setUser', newUser)
@@ -152,14 +181,15 @@ export default {
       firebase.database().ref('/users/' + payload.uid)
         .once('value')
         .then((data) => {
-          commit('setUser', {
+          const newUser = {
             id: payload.uid,
             email: payload.email,
             phone: data.val().phone,
             avatar: data.val().avatar,
             admin: data.val().admin,
             username: data.val().username
-          })
+          }
+          commit('setUser', newUser)
         })
     },
     logout ({commit}) {

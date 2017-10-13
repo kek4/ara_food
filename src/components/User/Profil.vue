@@ -28,9 +28,24 @@
     </v-layout>
     <v-layout row>
       <v-flex xs12 md8 offset-md2>
+        <v-btn raised class="priamry" @click="onPickFile">Upload avatar</v-btn>
+        <input type="file"
+               style="display:none;"
+               ref="fileInput"
+               accept="image/*"
+        @change="onFilePicked">
+      </v-flex>
+    </v-layout>
+    <v-layout row>
+      <v-flex xs12 md8 offset-md2>
+        <v-subheader>Ou</v-subheader>
+      </v-flex>
+    </v-layout>
+    <v-layout row>
+      <v-flex xs12 md8 offset-md2>
         <v-text-field
           name="avatar"
-          label="Avatar"
+          label="Url avatar"
           id="image-avatar"
           v-model="editedAvatar"
           ></v-text-field>
@@ -66,7 +81,8 @@ export default {
     return {
       editedAvatar: this.$store.getters.user.avatar,
       editedPhone: this.$store.getters.user.phone,
-      username: this.$store.getters.user.username
+      username: this.$store.getters.user.username,
+      image: null
     }
   },
   computed: {
@@ -79,8 +95,25 @@ export default {
       this.$store.dispatch('updateProfilData', {
         password: this.password,
         phone: this.editedPhone,
-        avatar: this.editedAvatar
+        avatar: this.editedAvatar,
+        image: this.image
       })
+    },
+    onPickFile () {
+      this.$refs.fileInput.click()
+    },
+    onFilePicked (event) {
+      const files = event.target.files
+      let filename = files[0].name
+      if (filename.lastIndexOf('.') <= 0) {
+        return alert('Fichier non valide')
+      }
+      const fileReader = new FileReader()
+      fileReader.addEventListener('load', () => {
+        this.editedAvatar = fileReader.result
+      })
+      fileReader.readAsDataURL(files[0])
+      this.image = files[0]
     }
   }
 }
