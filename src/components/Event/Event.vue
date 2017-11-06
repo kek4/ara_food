@@ -13,9 +13,30 @@
       <v-flex xs12 md8 offset-md2>
         <v-card>
           <v-card-title>
-            <h5 class="primary--text">{{ event.title }}</h5>
-            <v-spacer></v-spacer>
-            <app-edit-event-dialogue v-if="userIsCreator" :event="event"></app-edit-event-dialogue>
+            <v-flex xs12>
+              <h5 class="primary--text">{{ event.title }}</h5>
+              <v-spacer></v-spacer>
+              <app-edit-event-dialogue v-if="userIsCreator" :event="event"></app-edit-event-dialogue>
+            </v-flex>
+            <v-flex xs5>
+              <v-tooltip top left>
+                <v-subheader slot="activator" v-if="!userIsCreator">
+                  <v-icon>account_box</v-icon>{{ creator.username }}
+                </v-subheader>
+                <span>
+                  <div>
+                    Contact
+                    <v-divider dark></v-divider>
+                  </div>
+                  <div>
+                    Tel: {{ creator.phone }}
+                  </div>
+                  <div>
+                    Email: {{ creator.email }}
+                  </div>
+                </span>
+              </v-tooltip>
+            </v-flex>
           </v-card-title>
           <v-card-media
             :src="event.imageUrl"
@@ -56,8 +77,14 @@
 </template>
 
 <script>
+  import * as firebase from 'firebase'
   export default {
     props: ['id'],
+    data () {
+      return {
+        creator: ''
+      }
+    },
     computed: {
       event () {
         return this.$store.getters.loadedEvent(this.id)
@@ -75,6 +102,13 @@
       loading () {
         return this.$store.getters.loading
       }
+    },
+    mounted () {
+      firebase.database().ref('/users/' + this.event.creatorId)
+        .once('value')
+        .then((data) => {
+          this.creator = data.val()
+        })
     }
   }
 </script>
