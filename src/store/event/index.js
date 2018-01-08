@@ -182,7 +182,6 @@ export default {
           const events = []
           const obj = response.data
           for (let key in obj) {
-            console.log(obj[0])
             let subscribers = []
             if (obj[key].subscribers !== 'undefined') {
               const subList = obj[key].subscribers
@@ -191,7 +190,7 @@ export default {
               }
             }
             events.push({
-              id: key,
+              id: obj[key]._id.$oid,
               title: obj[key].title,
               description: obj[key].description,
               imageUrl: obj[key].imageUrl,
@@ -200,7 +199,11 @@ export default {
               subscribers: subscribers
             })
           }
-          commit('setLoadedEvents', events)
+          const today = moment()
+          let ev = events.filter((e) => {
+            return moment(e.date).isAfter(today)
+          })
+          commit('setLoadedEvents', ev)
           commit('setLoading', false)
         })
         .catch(error => {
@@ -379,7 +382,6 @@ export default {
       })
     },
     eventToCome (state, getters) {
-      const event = getters.loadedEvents
       const today = moment()
       return event.filter((e) => {
         return moment(e.date).isAfter(today)

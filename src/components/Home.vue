@@ -20,7 +20,7 @@
         <v-carousel hide-controls style="cursor: pointer;">
           <v-carousel-item
             v-for="event in events"
-            :src="event.imageUrl"
+            :src="event.imageUrl !== undefined ? event.imageUrl : ''"
             :key="event.id"
             @click="onLoadEvent(event.id)"
             class="carousel-item info">
@@ -45,7 +45,8 @@
   export default {
     computed: {
       events () {
-        return this.$store.getters.eventToCome
+        console.log(this.$store.getters.loadedEvents)
+        return this.$store.getters.loadedEvents
       },
       loading () {
         return this.$store.getters.loading

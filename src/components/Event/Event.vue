@@ -1,7 +1,7 @@
 <template>
   <v-layout row>
     <v-layout row wrap v-if="loading">
-      <v-flex xs12 class="text-xs-center" xs12 md8 offset-md2>
+      <v-flex xs12 class="text-xs-center" md8 offset-md2>
         <v-progress-circular
           indeterminate
           class="primary--text"
@@ -77,18 +77,19 @@
 </template>
 
 <script>
-  import * as firebase from 'firebase'
+  // import * as firebase from 'firebase'
   export default {
     props: ['id'],
     data () {
       return {
-        creator: ''
+        creator: '',
+        event: {}
       }
     },
+    created () {
+      this.event = this.$store.getters.loadedEvent(this.id)
+    },
     computed: {
-      event () {
-        return this.$store.getters.loadedEvent(this.id)
-      },
       userIsAuthenticated () {
         return this.$store.getters.user !== null && this.$store.getters.user !== undefined
       },
@@ -104,11 +105,11 @@
       }
     },
     mounted () {
-      firebase.database().ref('/users/' + this.event.creatorId)
-        .once('value')
-        .then((data) => {
-          this.creator = data.val()
-        })
+      // firebase.database().ref('/users/' + this.event.creatorId)
+      //   .once('value')
+      //   .then((data) => {
+      //     this.creator = data.val()
+      //   })
     }
   }
 </script>
