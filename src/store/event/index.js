@@ -2,6 +2,7 @@ import * as firebase from 'firebase'
 import router from '../../router'
 import moment from 'moment'
 import { store } from '../index.js'
+import Vue from 'vue'
 
 export default {
   state: {
@@ -9,8 +10,9 @@ export default {
   },
   mutations: {
     subscribeUserForEvent (state, payload) {
+      // a revoir selon la structure et les key de mongoDB
       const event = state.loadedEvents.find(event => {
-        return event.id === payload.fbEventKey
+        return event.id === payload.eventKey
       })
       const subscribers = event.subscribers.find(sub => {
         return sub.id === payload.id
@@ -24,7 +26,7 @@ export default {
     },
     editComment (state, payload) {
       const event = state.loadedEvents.find(event => {
-        return event.id === payload.fbEventKey
+        return event.id === payload.eventKey
       })
       const subscribers = event.subscribers.find(sub => {
         return sub.id === payload.id
@@ -33,7 +35,7 @@ export default {
     },
     unSubscribeUserForEvent (state, payload) {
       const event = state.loadedEvents.find(event => {
-        return event.id === payload.fbEventKey
+        return event.id === payload.eventKey
       })
       const subscribers = event.subscribers.find(sub => {
         return sub.id === payload.id
@@ -75,23 +77,80 @@ export default {
     subscribeUserForEvent ({commit, getters}, payload) {
       commit('setLoading', true)
       const user = getters.user
-      firebase.database().ref('/events/' + payload.id).child('subscribers/' + user.id)
-        .set({
+      let newSubscriber = {
+        id: payload.id,
+        sub: user.id,
+        comment: payload.comment
+      }
+      Vue.axios({
+        method: 'post',
+        url: 'http://172.16.71.196:8181/araws/araevents/1.0.0-SNAPSHOT/addSubscriber',
+        body: newSubscriber
+      })
+      .then((response) => {
+        commit('setLoading', false)
+        commit('subscribeUserForEvent', {
           id: user.id,
-          comment: payload.comment
+          comment: payload.comment,
+          eventKey: payload.id
         })
-        .then((data) => {
-          commit('setLoading', false)
-          commit('subscribeUserForEvent', {
-            id: user.id,
-            comment: payload.comment,
-            fbEventKey: payload.id
-          })
+      })
+      .catch((error) => {
+        commit('setLoading', false)
+        console.log(error)
+      })
+
+      // firebase.database().ref('/events/' + payload.id).child('subscribers/' + user.id)
+      //   .set({
+      //     id: user.id,
+      //     comment: payload.comment
+      //   })
+      //   .then((data) => {
+      //     commit('setLoading', false)
+      //     commit('subscribeUserForEvent', {
+      //       id: user.id,
+      //       comment: payload.comment,
+      //       eventKey: payload.id
+      //     })
+      //   })
+      //   .catch(error => {
+      //     commit('setLoading', false)
+      //     console.log(error)
+      //   })
+    },
+    unSubscribeUserForEvent ({commit, getters}, payload) {
+      commit('setLoading', true)
+      const user = getters.user
+      Vue.axios({
+        method: 'post',
+        url: 'http://172.16.71.196:8181/araws/araevents/1.0.0-SNAPSHOT/removeSubscriber',
+        body: {id: user.id}
+      })
+      .then((response) => {
+        commit('setLoading', false)
+        commit('unSubscribeUserForEvent', {
+          id: user.id,
+          // ce doit être le _id a revoir
+          eventKey: payload.id
         })
-        .catch(error => {
-          commit('setLoading', false)
-          console.log(error)
-        })
+      })
+      .catch((error) => {
+        commit('setLoading', false)
+        console.log(error)
+      })
+      // firebase.database().ref('/events/' + payload.id).child('subscribers/' + user.id)
+      //   .remove()
+      //   .then((data) => {
+      //     commit('setLoading', false)
+      //     commit('unSubscribeUserForEvent', {
+      //       id: user.id,
+      //       eventKey: payload.id
+      //     })
+      //   })
+      //   .catch(error => {
+      //     commit('setLoading', false)
+      //     console.log(error)
+      //   })
     },
     editComment ({commit, getters}, payload) {
       commit('setLoading', true)
@@ -105,24 +164,7 @@ export default {
           commit('editComment', {
             id: user.id,
             comment: payload.comment,
-            fbEventKey: payload.id
-          })
-        })
-        .catch(error => {
-          commit('setLoading', false)
-          console.log(error)
-        })
-    },
-    unSubscribeUserForEvent ({commit, getters}, payload) {
-      commit('setLoading', true)
-      const user = getters.user
-      firebase.database().ref('/events/' + payload.id).child('subscribers/' + user.id)
-        .remove()
-        .then((data) => {
-          commit('setLoading', false)
-          commit('unSubscribeUserForEvent', {
-            id: user.id,
-            fbEventKey: payload.id
+            eventKey: payload.id
           })
         })
         .catch(error => {
@@ -132,11 +174,15 @@ export default {
     },
     loadEvents ({commit}) {
       commit('setLoading', true)
-      firebase.database().ref('events').once('value')
-        .then((data) => {
+      Vue.axios({
+        method: 'get',
+        url: 'http://172.16.71.196:8181/araws/araevents/1.0.0-SNAPSHOT/getAllEvents'
+      })
+        .then((response) => {
           const events = []
-          const obj = data.val()
+          const obj = response.data
           for (let key in obj) {
+            console.log(obj[0])
             let subscribers = []
             if (obj[key].subscribers !== 'undefined') {
               const subList = obj[key].subscribers
@@ -157,11 +203,41 @@ export default {
           commit('setLoadedEvents', events)
           commit('setLoading', false)
         })
-        .catch((error) => {
+        .catch(error => {
           commit('setLoading', false)
           console.log(error)
-          // commit('setError', error)
         })
+
+      // firebase.database().ref('events').once('value')
+      //   .then((data) => {
+      //     const events = []
+      //     const obj = data.val()
+      //     for (let key in obj) {
+      //       let subscribers = []
+      //       if (obj[key].subscribers !== 'undefined') {
+      //         const subList = obj[key].subscribers
+      //         for (let key in subList) {
+      //           subscribers.push(subList[key])
+      //         }
+      //       }
+      //       events.push({
+      //         id: key,
+      //         title: obj[key].title,
+      //         description: obj[key].description,
+      //         imageUrl: obj[key].imageUrl,
+      //         date: obj[key].date,
+      //         creatorId: obj[key].creatorId,
+      //         subscribers: subscribers
+      //       })
+      //     }
+      //     commit('setLoadedEvents', events)
+      //     commit('setLoading', false)
+      //   })
+      //   .catch((error) => {
+      //     commit('setLoading', false)
+      //     console.log(error)
+      //     commit('setError', error)
+      //   })
     },
     createEvent ({commit, getters}, payload) {
       commit('setLoading', true)
@@ -174,14 +250,35 @@ export default {
         creatorId: getters.user.id,
         subscribers: []
       }
-      firebase.database().ref('events').push(event)
-        .then((data) => {
-          const key = data.key
+      Vue.axios({
+        method: 'post',
+        url: 'http://172.16.71.196:8181/araws/araevents/1.0.0-SNAPSHOT/addEvent',
+        body: event
+      })
+        .then((response) => {
+          // retrouver le _id
+          const key = response.data.key
           commit('setLoading', false)
           commit('createEvent', {
             ...event,
             id: key
           })
+          // revoir l'id on le met pas et on le récupère apres dans le store
+          let newSubscriber = {
+            comment: ''
+          }
+          Vue.axios({
+            method: 'post',
+            url: 'http://172.16.71.196:8181/araws/araevents/1.0.0-SNAPSHOT/addSubscriber',
+            body: newSubscriber
+          }).then((response) => {
+
+          }).catch((error) => {
+            commit('setLoading', false)
+            console.log(error)
+            commit('setError', error)
+          })
+          // a revoir si on dispatch avec le sub en 1 ou 2 actions et quel id on prend(key ou attribut)
           store.dispatch('subscribeUserForEvent', {
             id: key,
             comment: ''
@@ -195,8 +292,31 @@ export default {
         .catch((error) => {
           commit('setLoading', false)
           console.log(error)
-          // commit('setError', error)
+          commit('setError', error)
         })
+      // firebase.database().ref('events').push(event)
+      //   .then((data) => {
+      //     const key = data.key
+      //     commit('setLoading', false)
+      //     commit('createEvent', {
+      //       ...event,
+      //       id: key
+      //     })
+      //     store.dispatch('subscribeUserForEvent', {
+      //       id: key,
+      //       comment: ''
+      //     })
+      //     router.push({name: 'Events'})
+      //     commit('setToaster', event.title + 'a Ã©tÃ© crÃ©er pour le ' + event.date)
+      //     setTimeout(() => {
+      //       commit('clearToaster')
+      //     }, 5000)
+      //   })
+      //   .catch((error) => {
+      //     commit('setLoading', false)
+      //     console.log(error)
+      //     commit('setError', error)
+      //   })
     },
     deleteEvent ({commit}, payload) {
       commit('setLoading', true)

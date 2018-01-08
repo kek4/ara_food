@@ -1,4 +1,6 @@
 import Vue from 'vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 import Vuetify from 'vuetify'
 import './stylus/main.styl'
 import App from './App'
@@ -15,6 +17,7 @@ import updateUserPassword from './components/User/UpdatePasswordDialogue.vue'
 import Subscriber from './components/Subscribe/Subscriber.vue'
 import DeleteEventDialog from './components/Event/DeleteEvent.vue'
 
+Vue.use(VueAxios, axios)
 Vue.use(Vuetify)
 Vue.config.productionTip = false
 
