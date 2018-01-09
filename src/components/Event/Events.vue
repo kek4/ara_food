@@ -39,7 +39,7 @@
 export default {
   computed: {
     events () {
-      return this.$store.getters.eventToCome
+      return this.$store.getters.loadedEvents
     }
   }
 }

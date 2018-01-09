@@ -82,14 +82,13 @@
     props: ['id'],
     data () {
       return {
-        creator: '',
-        event: {}
+        creator: ''
       }
     },
-    created () {
-      this.event = this.$store.getters.loadedEvent(this.id)
-    },
     computed: {
+      event () {
+        return this.$store.getters.loadedEvent(this.id)
+      },
       userIsAuthenticated () {
         return this.$store.getters.user !== null && this.$store.getters.user !== undefined
       },

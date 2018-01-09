@@ -2,7 +2,7 @@ export default {
   state: {
     loading: false,
     error: null,
-    toaster: null,
+    toaster: {display: false, data: ''},
     modal: false
   },
   mutations: {
@@ -16,10 +16,10 @@ export default {
       state.error = null
     },
     setToaster (state, payload) {
-      state.toaster = payload
+      state.toaster = {display: true, data: payload}
     },
     clearToaster (state) {
-      state.toaster = null
+      state.toaster = {display: false, data: ''}
     },
     setModal (state, payload) {
       state.modal = payload

@@ -3,8 +3,8 @@
     <v-snackbar
       top
       @dismissed="onDismissed"
-      v-model="toaster">
-      {{ toaster }}
+      v-model="toaster.display">
+      {{ toaster.data }}
       <v-btn flat class="pink--text" @click.native="onDismissed">Close</v-btn>
     </v-snackbar>
 

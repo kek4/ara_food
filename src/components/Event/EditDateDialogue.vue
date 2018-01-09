@@ -1,6 +1,6 @@
 <template>
-  <v-dialog width="650" persistent v-model="editDialogue">
-    <v-btn accent small fab accent slot="activator">
+  <v-dialog min-width="650" persistent v-model="editDialogue">
+    <v-btn accent small fab slot="activator">
       <v-icon>access_time</v-icon>
     </v-btn>
     <v-card>
@@ -63,11 +63,10 @@ export default {
   computed: {
     formatedDate () {
       const date = moment(this.editedDate)
-      console.log(date)
       const timeArray = this.editedTime.split(':')
       date.hours(timeArray[0])
       date.minutes(timeArray[1])
-      return date.format('YYYY-M-DD HH:mm')
+      return date.format('YYYY-MM-DD HH:mm')
     },
     loading () {
       return this.$store.getters.loading
@@ -86,8 +85,6 @@ export default {
     const date = this.event.date.split(' ')
     this.editedDate = date[0]
     this.editedTime = date[1]
-  },
-  mounted () {
     const d = new Date()
     if (moment(d).hour() > 12) {
       this.allowedDates.min = new Date()

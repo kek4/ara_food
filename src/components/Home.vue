@@ -15,7 +15,7 @@
         v-if="loading"></v-progress-circular>
       </v-flex>
     </v-layout>
-    <v-layout row wrap class="mt-2 carousel-height" v-if="!loading">
+    <v-layout row wrap class="mt-2 carousel-height" v-if="!loading && events">
       <v-flex xs12 md8 offset-md2>
         <v-carousel hide-controls style="cursor: pointer;">
           <v-carousel-item
@@ -38,6 +38,11 @@
         </v-carousel>
       </v-flex>
     </v-layout>
+    <v-layout row wrap class="mt-2 carousel-height" v-if="!loading && !events">
+      <v-flex xs12 md8 offset-md2>
+        <div>Rien :-/</div>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
@@ -45,7 +50,6 @@
   export default {
     computed: {
       events () {
-        console.log(this.$store.getters.loadedEvents)
         return this.$store.getters.loadedEvents
       },
       loading () {
